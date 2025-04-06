@@ -19,11 +19,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/basthon', express.static(path.join(__dirname, 'basthon')));
 
 // Importer les routes
+
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const adminMetadataRoutes = require('./routes/adminMetadataRoutes');
 const metadataRoutes = require('./routes/metadataRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const exerciseRoutes = require('./routes/exerciseRoutes');
 
 app.use('/', userRoutes);
 app.get('/eleve-dashboard', (req, res) => {
@@ -33,6 +35,7 @@ app.use('/admin', adminRoutes);
 app.use('/admin', adminMetadataRoutes);
 app.use('/api/metadata', metadataRoutes);
 app.use('/courses', courseRoutes);
+app.use('/exercises', exerciseRoutes);
 
 // Port
 const PORT = process.env.PORT || 3000;

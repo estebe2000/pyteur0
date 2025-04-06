@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Exécution Exercice dans Basthon</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #basthon-frame {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="error-message" style="color:red; font-weight:bold; text-align:center;"></div>
+    <iframe id="basthon-frame" style="display:none;"></iframe>
+
+    <script>
+        const filePath = "<%= filePath %>";
+        const ext = filePath.split('.').pop().toLowerCase();
+
+        const kernelMap = {
+            'py': 'python',
+            'sql': 'sql',
+            'ml': 'ocaml',
+            'js': 'javascript',
+            'xcas': 'xcas'
+        };
+
+        const kernel = kernelMap[ext];
+
+        if (!kernel) {
+            document.getElementById('error-message').innerText = "Extension de fichier non supportée.";
+        } else {
+            const timestamp = Date.now();
+            const basthonUrl = `http://127.0.0.1:3000/basthon/basthon-console/index.html?kernel=${kernel}&from=${window.location.origin}${filePath}&t=${timestamp}`;
+            const iframe = document.getElementById('basthon-frame');
+            iframe.style.display = 'block';
+            iframe.src = basthonUrl;
+        }
+    </script>
+</body>
+</html>

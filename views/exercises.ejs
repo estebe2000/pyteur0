@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestion des exercices</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+  <h1 class="mb-4">Gestion des exercices</h1>
+  <% let retourUrl = '/'; %>
+<% if (role === 'admin') { retourUrl = '/admin'; } else if (role === 'professeur') { retourUrl = `/user?username=${encodeURIComponent(username)}`; } %>
+<a href="<%= retourUrl %>" class="btn btn-secondary mb-3">Retour</a>
+
+<form action="/exercises/add?role=admin&ownerId=1" method="POST" enctype="multipart/form-data" class="mb-4">
+    <input type="hidden" name="ownerId" value="1" />
+    <input type="hidden" name="proprietaire" value="<%= username %>" />
+    <div class="mb-2">
+      <label class="form-label">Titre</label>
+      <input type="text" name="title" class="form-control" required />
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control"></textarea>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Tags (séparés par virgules)</label>
+      <input type="text" name="tags" class="form-control" />
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Fichier code</label>
+      <input type="file" name="codefile" accept=".py,.sql,.ml,.js,.xcas" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-success">Uploader</button>
+  </form>
+
+  <h2>Liste des exercices</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Tags</th>
+        <th>Fichier</th>
+        <th>Propriétaire</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% exercises.forEach(e => { %>
+        <tr>
+          <td><%= e.title %></td>
+          <td><%= e.description %></td>
+          <td><%= e.tags %></td>
+          <td><a href="<%= e.filePath %>" target="_blank">Voir fichier</a></td>
+          <td><%= e.proprietaire %></td>
+          <td>
+            <% if (role === 'admin' || role === 'professeur') { %>
+              <form action="/exercises/delete/<%= e.id %>" method="POST" onsubmit="return confirm('Supprimer cet exercice ?');" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+              </form>
+              <a href="/exercises/run/<%= e.id %>" target="_blank" class="btn btn-sm btn-success">Lancer dans Basthon</a>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

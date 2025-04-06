@@ -3,6 +3,7 @@ const User = require('./models/User');
 const Classe = require('./models/Classe');
 const Groupe = require('./models/Groupe');
 const Course = require('./models/Course');
+const Exercise = require('./models/Exercise');
 
 async function init() {
   try {

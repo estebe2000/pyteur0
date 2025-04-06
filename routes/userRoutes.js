@@ -16,4 +16,6 @@ router.get('/eleve-dashboard', (req, res) => {
   res.render('eleve_dashboard');
 });
 
+router.get('/eleve-exercises', userController.eleveExercises);
+
 module.exports = router;

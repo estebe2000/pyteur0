@@ -6,13 +6,25 @@ const Exercise = sequelize.define('Exercise', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  content: {
+  description: {
     type: DataTypes.TEXT,
+    allowNull: true
+  },
+  filePath: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   ownerId: {
     type: DataTypes.INTEGER,
     allowNull: false
+  },
+  proprietaire: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  tags: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 });
 
