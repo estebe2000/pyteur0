@@ -75,9 +75,7 @@
               <form action="/admin/users/delete/<%= user.id %>" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
               </form>
-              <form action="/admin/users/edit/<%= user.id %>" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-sm btn-primary">Modifier</button>
-              </form>
+              <a href="/admin/users/edit/<%= user.id %>" class="btn btn-sm btn-primary">Modifier</a>
             </td>
           </tr>
         <% }) %>

@@ -14,6 +14,9 @@ router.post('/users/add', adminController.addUser);
 // Supprimer un utilisateur
 router.post('/users/delete/:id', adminController.deleteUser);
 
+// Formulaire édition utilisateur
+router.get('/users/edit/:id', adminController.getEditUser);
+
 // Modifier un utilisateur
 router.post('/users/edit/:id', adminController.editUser);
 

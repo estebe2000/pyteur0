@@ -4,6 +4,20 @@ const User = require('../models/User');
 const Classe = require('../models/Classe');
 const Groupe = require('../models/Groupe');
 
+// Afficher formulaire édition utilisateur
+exports.getEditUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+    const rolesPath = path.join(__dirname, '../config/roles.json');
+    const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf-8'));
+    res.render('editUser', { user, roles });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/admin/users');
+  }
+};
+
 // Dashboard admin
 exports.adminDashboard = (req, res) => {
   res.render('admin');
