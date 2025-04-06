@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestion des utilisateurs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="mb-4">Gestion des utilisateurs</h1>
+    <a href="/admin" class="btn btn-secondary mb-3">Retour au dashboard</a>
+
+    <div class="row mb-3 g-2">
+      <div class="col">
+        <select id="filter-role" class="form-select">
+          <option value="">Filtrer par rôle</option>
+          <% roles.forEach(r => { %>
+            <option value="<%= r %>"><%= r.charAt(0).toUpperCase() + r.slice(1) %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col">
+        <select id="filter-niveau" class="form-select">
+          <option value="">Filtrer par niveau</option>
+          <% niveaux.forEach(n => { %>
+            <option value="<%= n %>"><%= n %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col">
+        <select id="filter-classe" class="form-select">
+          <option value="">Filtrer par classe</option>
+          <% classes.forEach(c => { %>
+            <option value="<%= c.nom %>"><%= c.nom %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col">
+        <select id="filter-groupe" class="form-select">
+          <option value="">Filtrer par groupe</option>
+          <% groupes.forEach(g => { %>
+            <option value="<%= g.nom %>"><%= g.nom %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col">
+        <input id="filter-besoin" class="form-control" placeholder="Filtrer par besoin" />
+      </div>
+    </div>
+
+    <table class="table table-bordered table-striped" id="users-table">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Nom d'utilisateur</th>
+          <th>Rôle</th>
+          <th>Niveau</th>
+          <th>Classe</th>
+          <th>Groupe</th>
+          <th>Besoins</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.username %></td>
+            <td><%= user.role %></td>
+            <td><%= user.niveau || '' %></td>
+            <td><%= user.classe || '' %></td>
+            <td><%= user.groupe || '' %></td>
+            <td><%= user.besoin_particulier || '' %></td>
+            <td>
+              <form action="/admin/users/delete/<%= user.id %>" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+              </form>
+              <form action="/admin/users/edit/<%= user.id %>" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-primary">Modifier</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+<script>
+const filterRole = document.getElementById('filter-role');
+const filterNiveau = document.getElementById('filter-niveau');
+const filterClasse = document.getElementById('filter-classe');
+const filterGroupe = document.getElementById('filter-groupe');
+const filterBesoin = document.getElementById('filter-besoin');
+const rows = document.querySelectorAll('#users-table tbody tr');
+
+function applyFilters() {
+  const roleVal = filterRole.value.toLowerCase();
+  const niveauVal = filterNiveau.value.toLowerCase();
+  const classeVal = filterClasse.value.toLowerCase();
+  const groupeVal = filterGroupe.value.toLowerCase();
+  const besoinVal = filterBesoin.value.toLowerCase();
+
+  rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const role = cells[2].innerText.toLowerCase();
+    const niveau = cells[3].innerText.toLowerCase();
+    const classe = cells[4].innerText.toLowerCase();
+    const groupe = cells[5].innerText.toLowerCase();
+    const besoin = cells[6].innerText.toLowerCase();
+
+    const matchRole = !roleVal || role.includes(roleVal);
+    const matchNiveau = !niveauVal || niveau.includes(niveauVal);
+    const matchClasse = !classeVal || classe.includes(classeVal);
+    const matchGroupe = !groupeVal || groupe.includes(groupeVal);
+    const matchBesoin = !besoinVal || besoin.includes(besoinVal);
+
+    if (matchRole && matchNiveau && matchClasse && matchGroupe && matchBesoin) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+filterRole.addEventListener('change', applyFilters);
+filterNiveau.addEventListener('change', applyFilters);
+filterClasse.addEventListener('input', applyFilters);
+filterGroupe.addEventListener('input', applyFilters);
+filterBesoin.addEventListener('input', applyFilters);
+</script>
+
+<h2 class="mt-5">Ajouter un utilisateur</h2>
+<form action="/admin/users/add" method="POST" class="row g-3">
+  <div class="col-md-4">
+    <label class="form-label">Nom d'utilisateur</label>
+    <input type="text" name="username" class="form-control" required />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Mot de passe</label>
+    <input type="password" name="password" class="form-control" required />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Rôle</label>
+    <select name="role" class="form-select">
+      <option value="">-- Sélectionner --</option>
+      <% roles.forEach(r => { %>
+        <option value="<%= r %>"><%= r.charAt(0).toUpperCase() + r.slice(1) %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Niveau</label>
+    <select id="niveau-select" name="niveau" class="form-select">
+      <option value="">-- Sélectionner --</option>
+      <% niveaux.forEach(n => { %>
+        <option value="<%= n %>"><%= n %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Classe</label>
+<select id="classe-select" name="classe" class="form-select">
+  <option value="">-- Sélectionner --</option>
+  <% classes.forEach(c => { %>
+    <option value="<%= c.nom %>" data-niveau="<%= c.niveau %>" data-id="<%= c.id %>"><%= c.nom %></option>
+  <% }) %>
+</select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Groupe</label>
+    <select id="groupe-select" name="groupe" class="form-select">
+      <option value="">-- Sélectionner --</option>
+      <% groupes.forEach(g => { %>
+        <option value="<%= g.nom %>" data-classe-id="<%= g.classeId %>"><%= g.nom %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <script>
+    const niveauSelect = document.getElementById('niveau-select');
+    const classeSelect = document.getElementById('classe-select');
+    const groupeSelect = document.getElementById('groupe-select');
+
+    niveauSelect.addEventListener('change', () => {
+      const niveau = niveauSelect.value;
+      Array.from(classeSelect.options).forEach(opt => {
+        if (!opt.value) return;
+        opt.style.display = (opt.getAttribute('data-niveau') === niveau) ? 'block' : 'none';
+      });
+      classeSelect.value = '';
+      groupeSelect.value = '';
+      Array.from(groupeSelect.options).forEach(opt => {
+        if (!opt.value) return;
+        opt.style.display = 'none';
+      });
+    });
+
+    classeSelect.addEventListener('change', () => {
+      const selectedClasse = classeSelect.value;
+      const selectedClasseId = Array.from(classeSelect.options).find(opt => opt.value === selectedClasse)?.getAttribute('data-id');
+      Array.from(groupeSelect.options).forEach(opt => {
+        if (!opt.value) return;
+        opt.style.display = (opt.getAttribute('data-classe-id') === selectedClasseId) ? 'block' : 'none';
+      });
+      groupeSelect.value = '';
+    });
+  </script>
+  <div class="col-md-3">
+    <label class="form-label">Besoins particuliers</label>
+    <input type="text" name="besoin_particulier" class="form-control" placeholder="Daltonien, Dyslexique..." />
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-success">Ajouter</button>
+  </div>
+</form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

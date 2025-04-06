@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Tableau de bord Administrateur</h1>
+      <a href="/" class="btn btn-secondary">Déconnexion</a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Gestion des utilisateurs</h5>
+            <p class="card-text flex-grow-1">Ajouter, modifier, supprimer élèves, professeurs, admins.</p>
+            <a href="/admin/users" class="btn btn-primary mt-auto">Gérer</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Gestion des classes & groupes</h5>
+            <p class="card-text flex-grow-1">Créer, modifier, supprimer les classes et groupes scolaires.</p>
+            <a href="/admin/classes-groups" class="btn btn-primary mt-auto">Gérer</a>
+          </div>
+        </div>
+      </div>
+
+<div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Gestion des cours</h5>
+            <p class="card-text flex-grow-1">Ajouter, modifier, supprimer les ressources pédagogiques.</p>
+<a href="/courses?role=admin&ownerId=1" class="btn btn-primary mt-auto">Accéder</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Gestion des exercices</h5>
+            <p class="card-text flex-grow-1">Créer et gérer les exercices pour les élèves.</p>
+            <a href="#" class="btn btn-primary mt-auto">Accéder</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Gestion des QCM</h5>
+            <p class="card-text flex-grow-1">Créer et gérer les questionnaires à choix multiples.</p>
+            <a href="#" class="btn btn-primary mt-auto">Accéder</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Suivi des résultats</h5>
+            <p class="card-text flex-grow-1">Consulter les performances des élèves.</p>
+            <a href="#" class="btn btn-primary mt-auto">Voir le suivi</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
