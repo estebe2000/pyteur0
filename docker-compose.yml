@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  portail-node:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - ./database.sqlite:/app/database.sqlite
+    environment:
+      - NODE_ENV=production
+    command: node app.js

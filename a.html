@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portail d'Authentification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg flex items-center justify-center p-4">
+    <!-- Page de Login (visible par défaut) -->
+    <div id="login-page" class="w-full max-w-md">
+        <div class="bg-white rounded-lg card-shadow overflow-hidden">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-lock-open text-5xl text-purple-600 mb-4 floating"></i>
+                    <h1 class="text-3xl font-bold text-gray-800">Portail Sécurisé</h1>
+                    <p class="text-gray-600 mt-2">Connectez-vous pour accéder à votre espace</p>
+                </div>
+                
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Nom d'utilisateur</label>
+                        <input type="text" id="username" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+                        <input type="password" id="password" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <div>
+                        <button type="submit" 
+                                class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            Se connecter
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 text-center text-sm text-gray-600">
+                    <p>Pour tester : admin/admin, power/power, user/user</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Page Admin (masquée par défaut) -->
+    <div id="admin-page" class="hidden w-full max-w-6xl">
+        <div class="bg-white rounded-lg card-shadow overflow-hidden">
+            <div class="bg-purple-700 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Espace Administrateur</h1>
+                    <button id="logout-btn" class="bg-white text-purple-700 px-4 py-1 rounded-md hover:bg-gray-100 transition">
+                        Déconnexion
+                    </button>
+                </div>
+                <p class="mt-2">Bienvenue, <span id="admin-username" class="font-semibold"></span></p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                        <h3 class="font-bold text-purple-800 mb-2">Statistiques</h3>
+                        <p class="text-gray-700">Utilisateurs actifs: <span class="font-bold">24</span></p>
+                        <p class="text-gray-700">Connexions aujourd'hui: <span class="font-bold">12</span></p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <h3 class="font-bold text-blue-800 mb-2">Actions rapides</h3>
+                        <button class="text-blue-700 hover:underline mr-3">+ Nouvel utilisateur</button>
+                        <button class="text-blue-700 hover:underline">Exporter données</button>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <h3 class="font-bold text-green-800 mb-2">Notifications</h3>
+                        <p class="text-gray-700">2 requêtes en attente</p>
+                        <p class="text-gray-700">Mise à jour disponible</p>
+                    </div>
+                </div>
+                
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Gestion des Utilisateurs</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 border-b">ID</th>
+                                <th class="py-2 px-4 border-b">Nom d'utilisateur</th>
+                                <th class="py-2 px-4 border-b">Rôle</th>
+                                <th class="py-2 px-4 border-b">Dernière connexion</th>
+                                <th class="py-2 px-4 border-b">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-center">1</td>
+                                <td class="py-2 px-4 border-b text-center">admin</td>
+                                <td class="py-2 px-4 border-b text-center"><span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">Admin</span></td>
+                                <td class="py-2 px-4 border-b text-center">Aujourd'hui, 10:30</td>
+                                <td class="py-2 px-4 border-b text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-center">2</td>
+                                <td class="py-2 px-4 border-b text-center">power</td>
+                                <td class="py-2 px-4 border-b text-center"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Power User</span></td>
+                                <td class="py-2 px-4 border-b text-center">Hier, 15:45</td>
+                                <td class="py-2 px-4 border-b text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b text-center">3</td>
+                                <td class="py-2 px-4 border-b text-center">user1</td>
+                                <td class="py-2 px-4 border-b text-center"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">User</span></td>
+                                <td class="py-2 px-4 border-b text-center">12/06/2023</td>
+                                <td class="py-2 px-4 border-b text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 flex justify-between items-center">
+                    <div>
+                        <button class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition">
+                            <i class="fas fa-plus mr-2"></i>Ajouter un utilisateur
+                        </button>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        Affichage 1-3 sur 12 utilisateurs
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Page Power User (masquée par défaut) -->
+    <div id="poweruser-page" class="hidden w-full max-w-4xl">
+        <div class="bg-white rounded-lg card-shadow overflow-hidden">
+            <div class="bg-yellow-600 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Espace Power User</h1>
+                    <button id="logout-btn-power" class="bg-white text-yellow-700 px-4 py-1 rounded-md hover:bg-gray-100 transition">
+                        Déconnexion
+                    </button>
+                </div>
+                <p class="mt-2">Bienvenue, <span id="poweruser-username" class="font-semibold"></span></p>
+            </div>
+            
+            <div class="p-6">
+                <div class="flex items-center mb-6">
+                    <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-bolt text-yellow-600 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Accès étendus</h2>
+                        <p class="text-gray-600">Vous avez des privilèges supplémentaires par rapport aux utilisateurs standards.</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <h3 class="font-bold text-yellow-700 mb-2 flex items-center">
+                            <i class="fas fa-chart-line mr-2"></i> Statistiques avancées
+                        </h3>
+                        <p class="text-gray-700">Accédez aux données analytiques complètes du système.</p>
+                        <button class="mt-3 text-yellow-700 hover:underline">Voir les rapports</button>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <h3 class="font-bold text-yellow-700 mb-2 flex items-center">
+                            <i class="fas fa-users-cog mr-2"></i> Gestion limitée
+                        </h3>
+                        <p class="text-gray-700">Modifiez certains paramètres utilisateurs (sauf admins).</p>
+                        <button class="mt-3 text-yellow-700 hover:underline">Gérer les utilisateurs</button>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <h3 class="font-bold text-yellow-700 mb-2 flex items-center">
+                            <i class="fas fa-tools mr-2"></i> Outils avancés
+                        </h3>
+                        <p class="text-gray-700">Utilisez nos outils de configuration avancée.</p>
+                        <button class="mt-3 text-yellow-700 hover:underline">Ouvrir les outils</button>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <h3 class="font-bold text-yellow-700 mb-2 flex items-center">
+                            <i class="fas fa-file-export mr-2"></i> Export de données
+                        </h3>
+                        <p class="text-gray-700">Exportez les données dans différents formats.</p>
+                        <button class="mt-3 text-yellow-700 hover:underline">Exporter maintenant</button>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                Vous n'avez pas les droits complets d'administration. Contactez un administrateur pour les actions restreintes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Page User (masquée par défaut) -->
+    <div id="user-page" class="hidden w-full max-w-2xl">
+        <div class="bg-white rounded-lg card-shadow overflow-hidden">
+            <div class="bg-green-600 text-white p-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Espace Utilisateur</h1>
+                    <button id="logout-btn-user" class="bg-white text-green-700 px-4 py-1 rounded-md hover:bg-gray-100 transition">
+                        Déconnexion
+                    </button>
+                </div>
+                <p class="mt-2">Bienvenue, <span id="user-username" class="font-semibold"></span></p>
+            </div>
+            
+            <div class="p-6">
+                <div class="text-center mb-8">
+                    <div class="bg-green-100 inline-flex p-4 rounded-full mb-4">
+                        <i class="fas fa-user text-green-600 text-4xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">Votre espace personnel</h2>
+                    <p class="text-gray-600 mt-2">Personnalisez votre expérience et accédez à vos données.</p>
+                </div>
+                
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
+                        <div class="bg-green-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-user-edit text-green-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800">Profil</h3>
+                            <p class="text-sm text-gray-600">Modifiez vos informations personnelles</p>
+                        </div>
+                        <div class="ml-auto text-gray-400">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
+                        <div class="bg-blue-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-lock text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800">Sécurité</h3>
+                            <p class="text-sm text-gray-600">Changez votre mot de passe</p>
+                        </div>
+                        <div class="ml-auto text-gray-400">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
+                        <div class="bg-purple-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-bell text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-800">Notifications</h3>
+                            <p class="text-sm text-gray-600">Configurez vos préférences</p>
+                        </div>
+                        <div class="ml-auto text-gray-400">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 border-l-4 border-green-400 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-green-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700">
+                                Vous utilisez actuellement le compte avec les droits les plus bas. Contactez un administrateur pour obtenir plus d'accès.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données des utilisateurs (en production, cela viendrait d'une base de données)
+        const users = [
+            { username: 'admin', password: 'admin', role: 'admin', name: 'Administrateur Principal' },
+            { username: 'power', password: 'power', role: 'poweruser', name: 'Power User' },
+            { username: 'user', password: 'user', role: 'user', name: 'Utilisateur Standard' }
+        ];
+        
+        // Gestion du formulaire de login
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Vérification des identifiants
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Masquer la page de login
+                document.getElementById('login-page').classList.add('hidden');
+                
+                // Afficher la page correspondante au rôle
+                if (user.role === 'admin') {
+                    document.getElementById('admin-page').classList.remove('hidden');
+                    document.getElementById('admin-username').textContent = user.name;
+                } else if (user.role === 'poweruser') {
+                    document.getElementById('poweruser-page').classList.remove('hidden');
+                    document.getElementById('poweruser-username').textContent = user.name;
+                } else {
+                    document.getElementById('user-page').classList.remove('hidden');
+                    document.getElementById('user-username').textContent = user.name;
+                }
+            } else {
+                alert('Identifiants incorrects. Veuillez réessayer.');
+            }
+        });
+        
+        // Gestion des boutons de déconnexion
+        function logout() {
+            // Masquer toutes les pages sauf login
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('poweruser-page').classList.add('hidden');
+            document.getElementById('user-page').classList.add('hidden');
+            
+            // Afficher la page de login
+            document.getElementById('login-page').classList.remove('hidden');
+            
+            // Réinitialiser le formulaire
+            document.getElementById('login-form').reset();
+        }
+        
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('logout-btn-power').addEventListener('click', logout);
+        document.getElementById('logout-btn-user').addEventListener('click', logout);
+    </script>
+</body>
+</html>
